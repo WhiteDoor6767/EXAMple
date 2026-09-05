@@ -4,7 +4,7 @@
 
 ---
 
-## ✦ Key Features
+##  Key Features
 
 - **Visual Lesson Generation**: Converts complex problems into a sequence of step-by-step interactive visual scenes powered by Google Gemini AI.
 - **Subject Modes**:
@@ -18,7 +18,7 @@
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 - **Framework**: [Next.js 15](https://nextjs.org/) (App Router, Server Actions)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
@@ -29,7 +29,7 @@
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Clone the repository
 ```bash
@@ -60,6 +60,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📜 License
+##  License
 
 MIT © 2026 EXAMPLE
