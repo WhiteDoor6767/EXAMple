@@ -210,7 +210,7 @@ export function Hero({ onStart }: HeroProps) {
               marginBottom: "0.85rem",
             }}
           >
-            ✦ Powered by Gemini AI
+            Powered by Gemini AI
           </div>
           <h1
             style={{
@@ -295,7 +295,7 @@ export function Hero({ onStart }: HeroProps) {
             </div>
 
             <div style={{ borderBottom: "3px solid #000", padding: "0.5rem 0.75rem", background: "#FFE500", fontWeight: 700, fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-              ▶ Type your problem
+              Type your problem
             </div>
             <div style={{ padding: "0.75rem" }}>
               <textarea
@@ -329,7 +329,7 @@ export function Hero({ onStart }: HeroProps) {
           {/* Right: image upload */}
           <div className="md:col-span-2">
             <div style={{ borderBottom: "3px solid #000", padding: "0.5rem 0.75rem", background: "#fff", fontWeight: 700, fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.1em", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span>▶ Upload / Paste Image</span>
+              <span>Upload / Paste Image</span>
               <span className="hidden sm:inline" style={{ fontSize: "0.7rem", color: "#666" }}>Ctrl+V / ⌘V</span>
             </div>
             <div style={{ padding: "0.75rem" }}>
@@ -419,7 +419,7 @@ export function Hero({ onStart }: HeroProps) {
               exit={{ opacity: 0 }}
               style={{ marginTop: "0.75rem", border: "2px solid #000", background: "#FFE500", padding: "0.5rem 0.85rem", fontWeight: 700, fontSize: "0.8rem", boxShadow: "3px 3px 0 #000" }}
             >
-              ⚠ {error}
+              {error}
             </motion.div>
           )}
         </AnimatePresence>

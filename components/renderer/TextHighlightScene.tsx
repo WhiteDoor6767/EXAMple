@@ -81,7 +81,7 @@ export function TextHighlightScene({ content }: TextHighlightSceneProps) {
           letterSpacing: "0.12em",
         }}
       >
-        ✦ KEY INSIGHT
+        KEY INSIGHT
       </motion.div>
 
       {/* Main text card */}

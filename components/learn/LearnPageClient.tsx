@@ -479,7 +479,7 @@ export function LearnPageClient({
           {session.error && phase === "landing" && (
             <motion.div key="error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ width: "100%" }}>
               <div style={{ border: "3px solid #000", boxShadow: "5px 5px 0 #000", background: "#FFE500", padding: "2rem", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
-                <div style={{ fontWeight: 900, fontSize: "1.2rem", textTransform: "uppercase" }}>⚠ Something went wrong</div>
+                <div style={{ fontWeight: 900, fontSize: "1.2rem", textTransform: "uppercase" }}>Something went wrong</div>
                 <p style={{ fontSize: "0.9rem", fontStyle: "italic" }}>{session.error.message}</p>
                 <button onClick={onReset} className="brut-btn">Try again</button>
               </div>
