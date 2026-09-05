@@ -1,26 +1,189 @@
 @import "tailwindcss";
+@import "katex/dist/katex.min.css";
 
+@custom-variant dark (&:is(.dark *));
+
+/* ── Brutalist design tokens ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #FFFFFF;
+  --yellow: #FFE500;
+  --yellow-dark: #E6CF00;
+  --black: #000000;
+  --text: #000000;
+  --border: 3px solid #000000;
+  --shadow: 4px 4px 0px #000000;
+  --shadow-lg: 6px 6px 0px #000000;
+  --shadow-xl: 8px 8px 0px #000000;
+  --font-serif: 'Times New Roman', Times, Georgia, serif;
+  --radius: 0px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-serif);
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+  --animate-border-beam: border-beam calc(var(--duration) * 1s) infinite linear;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @keyframes shimmer-slide {
+    to { transform: translate(calc(100cqw - 100%), 0); }
+  }
+  @keyframes spin-around {
+    0%   { transform: translateZ(0) rotate(0); }
+    15%, 35% { transform: translateZ(0) rotate(90deg); }
+    65%, 85% { transform: translateZ(0) rotate(270deg); }
+    100% { transform: translateZ(0) rotate(360deg); }
+  }
+  @keyframes border-beam {
+    100% { offset-distance: 100%; }
   }
 }
 
+/* ── Global base ── */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-serif);
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ── CSS entrance animations (SSR-safe) ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-up {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.anim-fade-down  { animation: fade-down  0.4s ease-out both; }
+.anim-fade-up-1  { animation: fade-up    0.5s 0.05s ease-out both; }
+.anim-fade-up-2  { animation: fade-up    0.5s 0.15s ease-out both; }
+.anim-fade-up-3  { animation: fade-up    0.5s 0.25s ease-out both; }
+.anim-fade-up-4  { animation: fade-up    0.5s 0.35s ease-out both; }
+.anim-chip       { animation: scale-up 0.3s calc(0.3s + var(--chip-i, 0) * 0.04s) ease-out both; }
+
+/* ── Brutalist utilities ── */
+.brut-border  { border: var(--border); }
+.brut-shadow  { box-shadow: var(--shadow); }
+.brut-shadow-lg { box-shadow: var(--shadow-lg); }
+.brut-shadow-xl { box-shadow: var(--shadow-xl); }
+.brut-card {
+  border: var(--border);
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+.brut-card-yellow {
+  border: var(--border);
+  box-shadow: var(--shadow);
+  background: var(--yellow);
+}
+.brut-btn {
+  border: var(--border);
+  box-shadow: var(--shadow);
+  background: var(--yellow);
+  color: var(--black);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  transition: box-shadow 0.1s, transform 0.1s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.brut-btn:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translate(-2px, -2px);
+}
+.brut-btn:active {
+  box-shadow: none;
+  transform: translate(4px, 4px);
+}
+.brut-btn-outline {
+  border: var(--border);
+  box-shadow: var(--shadow);
+  background: #fff;
+  color: var(--black);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  transition: box-shadow 0.1s, transform 0.1s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.brut-btn-outline:hover {
+  background: var(--yellow);
+  box-shadow: var(--shadow-lg);
+  transform: translate(-2px, -2px);
+}
+.brut-btn-outline:active {
+  box-shadow: none;
+  transform: translate(4px, 4px);
+}
+.brut-input {
+  border: var(--border);
+  background: #FFFEF5;
+  color: var(--black);
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  width: 100%;
+  transition: box-shadow 0.1s;
+}
+.brut-input:focus {
+  box-shadow: var(--shadow);
+}
+
+/* ── KaTeX overrides for light/brutalist mode ── */
+.katex {
+  color: #000;
+  font-size: 1.4em;
+  font-family: 'Times New Roman', serif;
+}
+.katex-highlight {
+  background: var(--yellow);
+  font-weight: bold;
+  padding: 0 2px;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #fff; border-left: 2px solid #000; }
+::-webkit-scrollbar-thumb { background: #000; }
+::-webkit-scrollbar-thumb:hover { background: #333; }
+
+/* ── Selection ── */
+::selection { background: var(--yellow); color: #000; }
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
