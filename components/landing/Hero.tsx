@@ -143,38 +143,48 @@ export function Hero({ onStart }: HeroProps) {
 
   const canStart = hasContent || imageFile !== null;
 
+  // Detect mobile viewport for particle density optimization
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
     <div
       className="relative min-h-screen overflow-hidden"
       style={{ background: "#fff", fontFamily: "'Times New Roman', Times, serif" }}
     >
-      {/* ── Magic UI Interactive Particles Background (Brutalist High-Contrast Yellow) ── */}
+      {/* ── Magic UI Interactive Particles Background ── */}
       <Particles
         className="absolute inset-0 pointer-events-none z-0"
-        quantity={100}
+        quantity={isMobile ? 20 : 100}
         ease={40}
         color="#FFE500"
         strokeColor="#000000"
-        size={3.5}
+        size={isMobile ? 2.5 : 3.5}
       />
       <Particles
         className="absolute inset-0 pointer-events-none z-0"
-        quantity={50}
+        quantity={isMobile ? 10 : 50}
         ease={30}
         color="#FFCC00"
         strokeColor="#000000"
-        size={5.5}
+        size={isMobile ? 4.0 : 5.5}
       />
       {/* ── Top nav bar ── */}
       <div
-        className="anim-fade-down relative z-10 flex items-center justify-between px-6 py-4"
+        className="anim-fade-down relative z-10 flex items-center justify-between px-3 sm:px-6 py-2.5 sm:py-3.5"
         style={{ borderBottom: "3px solid #000", background: "#FFE500" }}
       >
-        <div style={{ fontWeight: 900, fontSize: "1.5rem", letterSpacing: "-0.02em", textTransform: "uppercase" }}>
+        <div style={{ fontWeight: 900, fontSize: "1.2rem", letterSpacing: "-0.02em", textTransform: "uppercase" }}>
           EXAMPLE
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div style={{ fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <div className="hidden sm:block" style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>
             AI × LEARNING
           </div>
           <HistoryDrawer onSelectProblem={(p) => handleExample(p)} />
@@ -182,31 +192,31 @@ export function Hero({ onStart }: HeroProps) {
       </div>
 
       {/* ── Hero grid ── */}
-      <div className="relative z-10 max-w-5xl mx-auto px-6 py-12 md:py-20">
+      <div className="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-6 sm:py-12 md:py-20">
 
         {/* Big headline */}
-        <div className="anim-fade-up-1 mb-10">
+        <div className="anim-fade-up-1 mb-6 sm:mb-10">
           <div
             style={{
               display: "inline-block",
               background: "#FFE500",
               border: "3px solid #000",
-              boxShadow: "6px 6px 0 #000",
-              padding: "0.3rem 0.8rem",
-              fontSize: "0.75rem",
+              boxShadow: "3px 3px 0 #000",
+              padding: "0.25rem 0.65rem",
+              fontSize: "0.7rem",
               fontWeight: 700,
               textTransform: "uppercase",
-              letterSpacing: "0.15em",
-              marginBottom: "1.2rem",
+              letterSpacing: "0.12em",
+              marginBottom: "0.85rem",
             }}
           >
             ✦ Powered by Gemini AI
           </div>
           <h1
             style={{
-              fontSize: "clamp(2.5rem, 7vw, 5.5rem)",
+              fontSize: "clamp(2.0rem, 7vw, 5.5rem)",
               fontWeight: 900,
-              lineHeight: 1.0,
+              lineHeight: 1.05,
               letterSpacing: "-0.03em",
               textTransform: "uppercase",
               color: "#000",
@@ -221,7 +231,8 @@ export function Hero({ onStart }: HeroProps) {
                 paddingRight: "0.2em",
                 display: "inline-block",
                 border: "3px solid #000",
-                boxShadow: "4px 4px 0 #000",
+                boxShadow: "3px 3px 0 #000",
+                marginTop: "0.2rem",
               }}
             >
               A LESSON.
@@ -229,11 +240,11 @@ export function Hero({ onStart }: HeroProps) {
           </h1>
           <p
             style={{
-              marginTop: "1.5rem",
-              fontSize: "1.1rem",
+              marginTop: "1rem",
+              fontSize: "0.95rem",
               color: "#000",
               maxWidth: "42rem",
-              lineHeight: 1.6,
+              lineHeight: 1.45,
               fontStyle: "italic",
             }}
           >
@@ -242,43 +253,51 @@ export function Hero({ onStart }: HeroProps) {
         </div>
 
         {/* ── Input + sidebar grid ── */}
-        <div className="anim-fade-up-2 grid md:grid-cols-5 gap-0" style={{ border: "3px solid #000", boxShadow: "6px 6px 0 #000" }}>
+        <div className="anim-fade-up-2 grid md:grid-cols-5 gap-0" style={{ border: "3px solid #000", boxShadow: "4px 4px 0 #000" }}>
 
           {/* Left: text input */}
-          <div className="md:col-span-3" style={{ borderRight: "3px solid #000" }}>
+          <div className="md:col-span-3 border-b-3 md:border-b-0 md:border-r-3 border-black">
             {/* Subject Selector Bar */}
-            <div style={{ borderBottom: "2px solid #000", padding: "0.6rem 0.8rem", background: "#FFFEF5", display: "flex", alignItems: "center", gap: "0.35rem", flexWrap: "wrap" }}>
-              <span style={{ fontWeight: 900, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginRight: "0.15rem" }}>
-                SUBJECT:
-              </span>
-              {SUBJECT_MODES.map((mode) => (
-                <button
-                  key={mode.id}
-                  type="button"
-                  onClick={() => setSubjectMode(mode.id)}
-                  style={{
-                    border: "2px solid #000",
-                    boxShadow: subjectMode === mode.id ? "2px 2px 0 #000" : "none",
-                    background: subjectMode === mode.id ? "#FFE500" : "#fff",
-                    color: "#000",
-                    padding: "0.2rem 0.65rem",
-                    fontSize: "0.75rem",
-                    fontWeight: 900,
-                    textTransform: "uppercase",
-                    cursor: "pointer",
-                    transition: "all 0.1s",
-                    transform: subjectMode === mode.id ? "translate(-1px, -1px)" : "none",
-                  }}
-                >
-                  <span>{mode.label}</span>
-                </button>
-              ))}
+            <div style={{ borderBottom: "2px solid #000", padding: "0.4rem 0.5rem", background: "#FFFEF5" }}>
+              <div className="flex items-center gap-1.5 w-full">
+                <span className="hidden md:inline" style={{ fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
+                  SUBJECT:
+                </span>
+                <div className="grid grid-cols-2 gap-1.5 w-full">
+                  {SUBJECT_MODES.map((mode) => (
+                    <button
+                      key={mode.id}
+                      type="button"
+                      onClick={() => setSubjectMode(mode.id)}
+                      style={{
+                        textAlign: "center",
+                        justifyContent: "center",
+                        border: "2px solid #000",
+                        boxShadow: subjectMode === mode.id ? "2px 2px 0 #000" : "none",
+                        background: subjectMode === mode.id ? "#FFE500" : "#fff",
+                        color: "#000",
+                        padding: "0.35rem 0.25rem",
+                        fontSize: "0.7rem",
+                        fontWeight: 900,
+                        textTransform: "uppercase",
+                        cursor: "pointer",
+                        transition: "all 0.1s",
+                        transform: subjectMode === mode.id ? "translate(-1px, -1px)" : "none",
+                      }}
+                    >
+                      <span className="truncate">
+                        {mode.id === "general" ? (isMobile ? "GENERAL" : mode.label) : mode.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            <div style={{ borderBottom: "3px solid #000", padding: "0.6rem 1rem", background: "#FFE500", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+            <div style={{ borderBottom: "3px solid #000", padding: "0.5rem 0.75rem", background: "#FFE500", fontWeight: 700, fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>
               ▶ Type your problem
             </div>
-            <div style={{ padding: "1rem" }}>
+            <div style={{ padding: "0.75rem" }}>
               <textarea
                 ref={textareaRef}
                 id="problem-input"
@@ -289,19 +308,19 @@ export function Hero({ onStart }: HeroProps) {
                 }}
                 onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) handleStart(); }}
                 placeholder="e.g. Why does x² differentiate to 2x?"
-                rows={5}
+                rows={4}
                 style={{
                   width: "100%",
                   fontFamily: "'Times New Roman', Times, serif",
-                  fontSize: "1rem",
+                  fontSize: "0.95rem",
                   border: "2px solid #000",
-                  padding: "0.75rem",
+                  padding: "0.65rem",
                   background: "#FFFEF5",
                   resize: "none",
                   outline: "none",
-                  lineHeight: 1.6,
+                  lineHeight: 1.45,
                 }}
-                onFocus={(e) => { e.target.style.boxShadow = "3px 3px 0 #000"; }}
+                onFocus={(e) => { e.target.style.boxShadow = "2px 2px 0 #000"; }}
                 onBlur={(e) => { e.target.style.boxShadow = "none"; }}
               />
             </div>
@@ -309,11 +328,11 @@ export function Hero({ onStart }: HeroProps) {
 
           {/* Right: image upload */}
           <div className="md:col-span-2">
-            <div style={{ borderBottom: "3px solid #000", padding: "0.75rem 1rem", background: "#fff", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.1em", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ borderBottom: "3px solid #000", padding: "0.5rem 0.75rem", background: "#fff", fontWeight: 700, fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.1em", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span>▶ Upload / Paste Image</span>
-              <span style={{ fontSize: "0.7rem", color: "#666" }}>Ctrl+V / ⌘V</span>
+              <span className="hidden sm:inline" style={{ fontSize: "0.7rem", color: "#666" }}>Ctrl+V / ⌘V</span>
             </div>
-            <div style={{ padding: "1rem" }}>
+            <div style={{ padding: "0.75rem" }}>
               <AnimatePresence mode="wait">
                 {imagePreview ? (
                   <motion.div
@@ -324,14 +343,14 @@ export function Hero({ onStart }: HeroProps) {
                     style={{ position: "relative", border: "2px solid #000" }}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={imagePreview} alt="Uploaded problem" style={{ width: "100%", maxHeight: "180px", objectFit: "contain", background: "#f5f5f5" }} />
+                    <img src={imagePreview} alt="Uploaded problem" style={{ width: "100%", maxHeight: "140px", objectFit: "contain", background: "#f5f5f5" }} />
                     <button
                       onClick={clearImage}
                       style={{ position: "absolute", top: 6, right: 6, background: "#FFE500", border: "2px solid #000", width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "2px 2px 0 #000" }}
                     >
                       <X style={{ width: 14, height: 14 }} />
                     </button>
-                    <div style={{ padding: "0.4rem 0.6rem", background: "#FFE500", borderTop: "2px solid #000", fontSize: "0.75rem", fontWeight: 700 }}>
+                    <div style={{ padding: "0.4rem 0.6rem", background: "#FFE500", borderTop: "2px solid #000", fontSize: "0.72rem", fontWeight: 700 }}>
                       <ImageIcon style={{ width: 12, height: 12, display: "inline", marginRight: 4 }} />
                       {imageFile?.name ?? "Pasted Image"}
                     </div>
@@ -349,18 +368,18 @@ export function Hero({ onStart }: HeroProps) {
                     style={{
                       border: `2px ${dragOver ? "solid" : "dashed"} #000`,
                       background: dragOver ? "#FFE500" : "#FFFEF5",
-                      padding: "1.5rem 1rem",
+                      padding: "1rem 0.5rem",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
-                      gap: "0.6rem",
+                      gap: "0.4rem",
                       cursor: "pointer",
                       transition: "background 0.15s",
                     }}
                   >
-                    <Upload style={{ width: 24, height: 24 }} />
-                    <p style={{ fontSize: "0.8rem", fontWeight: 700, textAlign: "center", textTransform: "uppercase" }}>
-                      Drop, browse, or Paste (Ctrl+V)
+                    <Upload style={{ width: 20, height: 20 }} />
+                    <p style={{ fontSize: "0.75rem", fontWeight: 700, textAlign: "center", textTransform: "uppercase" }}>
+                      Drop, browse, or Paste Image
                     </p>
 
                     <button
@@ -369,22 +388,21 @@ export function Hero({ onStart }: HeroProps) {
                         border: "2px solid #000",
                         boxShadow: "2px 2px 0 #000",
                         background: "#FFE500",
-                        padding: "0.3rem 0.75rem",
-                        fontSize: "0.75rem",
+                        padding: "0.3rem 0.65rem",
+                        fontSize: "0.7rem",
                         fontWeight: 900,
                         textTransform: "uppercase",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
-                        gap: "0.4rem",
-                        marginTop: "0.2rem",
+                        gap: "0.35rem",
                       }}
                     >
                       <Clipboard style={{ width: 12, height: 12 }} />
-                      Paste from Clipboard
+                      Paste Image
                     </button>
 
-                    <p style={{ fontSize: "0.7rem", color: "#555" }}>JPEG, PNG, WebP — max 10MB</p>
+                    <p style={{ fontSize: "0.65rem", color: "#555" }}>JPEG, PNG, WebP — max 10MB</p>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -399,7 +417,7 @@ export function Hero({ onStart }: HeroProps) {
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              style={{ marginTop: "0.75rem", border: "2px solid #000", background: "#FFE500", padding: "0.6rem 1rem", fontWeight: 700, fontSize: "0.875rem", boxShadow: "3px 3px 0 #000" }}
+              style={{ marginTop: "0.75rem", border: "2px solid #000", background: "#FFE500", padding: "0.5rem 0.85rem", fontWeight: 700, fontSize: "0.8rem", boxShadow: "3px 3px 0 #000" }}
             >
               ⚠ {error}
             </motion.div>
@@ -407,24 +425,35 @@ export function Hero({ onStart }: HeroProps) {
         </AnimatePresence>
 
         {/* Generate button */}
-        <div className="anim-fade-up-3 flex items-center gap-4 mt-6">
+        <div className="anim-fade-up-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-5">
           <button
             onClick={handleStart}
             disabled={!canStart}
-            className="brut-btn"
+            className="w-full sm:w-auto justify-center"
             style={{
-              fontSize: "1rem",
-              padding: "0.85rem 2rem",
-              opacity: canStart ? 1 : 0.4,
+              border: "3px solid #000",
+              background: canStart ? "#FFE500" : "#E5E5E5",
+              color: canStart ? "#000000" : "#777777",
+              boxShadow: canStart ? "4px 4px 0 #000" : "none",
+              opacity: 1, // Keep 100% solid opacity so floating particles do NOT bleed through!
+              fontSize: "0.95rem",
+              fontWeight: 900,
+              fontFamily: "'Times New Roman', Times, serif",
+              padding: "0.75rem 1.75rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
               cursor: canStart ? "pointer" : "not-allowed",
-              boxShadow: canStart ? "var(--shadow-lg)" : "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              transition: "all 0.1s",
             }}
           >
             <Sparkles style={{ width: 16, height: 16 }} />
             Generate Lesson
             <ArrowRight style={{ width: 16, height: 16 }} />
           </button>
-          <span style={{ fontSize: "0.8rem", color: "#666", fontStyle: "italic" }}>Ctrl + Enter / ⌘ + Enter to generate</span>
+          <span className="hidden sm:inline" style={{ fontSize: "0.78rem", color: "#666", fontStyle: "italic" }}>Ctrl + Enter / ⌘ + Enter to generate</span>
         </div>
 
         <input
@@ -437,32 +466,28 @@ export function Hero({ onStart }: HeroProps) {
         />
 
         {/* ── How it works ── */}
-        <div className="anim-fade-up-3 mt-14">
-          <div style={{ fontWeight: 900, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.15em", borderBottom: "3px solid #000", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
+        <div className="anim-fade-up-3 mt-10">
+          <div style={{ fontWeight: 900, fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.15em", borderBottom: "3px solid #000", paddingBottom: "0.4rem", marginBottom: "0.85rem" }}>
             How it works
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-0" style={{ border: "3px solid #000", boxShadow: "4px 4px 0 #000" }}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border-3 border-black shadow-[4px_4px_0_#000]">
             {[
-              { num: "01", label: "INPUT", desc: "Type or photograph a problem" },
-              { num: "02", label: "LEARN", desc: "Watch animated visual scenes" },
-              { num: "03", label: "QUIZ", desc: "Answer grounded questions" },
-              { num: "04", label: "ADAPT", desc: "Gaps get re-taught directly" },
-            ].map((item, i) => (
+              { num: "01", label: "INPUT", desc: "Type or photograph a problem", borderClass: "border-r-3 border-b-3 md:border-b-0 border-black bg-white" },
+              { num: "02", label: "LEARN", desc: "Watch animated visual scenes", borderClass: "border-b-3 md:border-b-0 md:border-r-3 border-black bg-[#FFFEF5]" },
+              { num: "03", label: "QUIZ", desc: "Answer grounded questions", borderClass: "border-r-3 md:border-r-3 border-black bg-white" },
+              { num: "04", label: "ADAPT", desc: "Gaps get re-taught directly", borderClass: "bg-[#FFFEF5]" },
+            ].map((item) => (
               <div
                 key={item.num}
-                style={{
-                  padding: "1.25rem 1rem",
-                  borderRight: i < 3 ? "3px solid #000" : "none",
-                  background: i % 2 === 0 ? "#fff" : "#FFFEF5",
-                }}
+                className={`p-3 sm:p-4 ${item.borderClass}`}
               >
-                <div style={{ fontWeight: 900, fontSize: "1.8rem", lineHeight: 1, color: "#FFE500", WebkitTextStroke: "2px #000" }}>
+                <div style={{ fontWeight: 900, fontSize: "1.5rem", lineHeight: 1, color: "#FFE500", WebkitTextStroke: "2px #000" }}>
                   {item.num}
                 </div>
-                <div style={{ fontWeight: 900, fontSize: "0.85rem", marginTop: "0.4rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                <div style={{ fontWeight: 900, fontSize: "0.8rem", marginTop: "0.3rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                   {item.label}
                 </div>
-                <div style={{ fontSize: "0.8rem", color: "#444", marginTop: "0.25rem", fontStyle: "italic" }}>
+                <div style={{ fontSize: "0.75rem", color: "#444", marginTop: "0.2rem", fontStyle: "italic" }}>
                   {item.desc}
                 </div>
               </div>
@@ -471,16 +496,16 @@ export function Hero({ onStart }: HeroProps) {
         </div>
 
         {/* ── Example problems ── */}
-        <div className="anim-fade-up-4 mt-12">
-          <div style={{ fontWeight: 900, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.15em", borderBottom: "3px solid #000", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
+        <div className="anim-fade-up-4 mt-9">
+          <div style={{ fontWeight: 900, fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.15em", borderBottom: "3px solid #000", paddingBottom: "0.4rem", marginBottom: "0.85rem" }}>
             Try an example
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem" }}>
+          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
             {EXAMPLE_PROBLEMS.map((example, i) => (
               <button
                 key={i}
                 onClick={() => handleExample(example)}
-                className="anim-chip"
+                className="anim-chip w-full sm:w-auto text-left max-w-full"
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLButtonElement).style.background = "#FFE500";
                   (e.currentTarget as HTMLButtonElement).style.boxShadow = "3px 3px 0 #000";
@@ -496,8 +521,8 @@ export function Hero({ onStart }: HeroProps) {
                   border: "2px solid #000",
                   background: "#fff",
                   boxShadow: "2px 2px 0 #000",
-                  padding: "0.4rem 0.9rem",
-                  fontSize: "0.82rem",
+                  padding: "0.45rem 0.75rem",
+                  fontSize: "0.8rem",
                   fontFamily: "'Times New Roman', Times, serif",
                   fontWeight: 600,
                   cursor: "pointer",
@@ -513,8 +538,8 @@ export function Hero({ onStart }: HeroProps) {
 
       {/* ── Footer bar ── */}
       <div
-        className="anim-fade-up-4"
-        style={{ borderTop: "3px solid #000", padding: "1rem 1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#000", color: "#FFE500", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.1em" }}
+        className="anim-fade-up-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-center px-4 py-3"
+        style={{ borderTop: "3px solid #000", background: "#000", color: "#FFE500", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em" }}
       >
         <span>EXAMPLE © 2026</span>
         <span>BUILT WITH GEMINI AI</span>
